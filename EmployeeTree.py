@@ -74,6 +74,15 @@ def GetDataFromFirestore(root):
 
     return root
 
+def AddNewEmployeeToDatabase(employee):
+    #Adds single employee to Firestore database
+    db.collection("Employees").set(employee)
+    return 0
+
+def DeleteEmployeeFromDataBase(employee):
+    db.collection("Employees").document(str(employee.employeeNumber)).delete()
+    return 0
+
 def BuildTree():
     root = EmployeeNode(0,"Company Name")
     return root
@@ -116,11 +125,6 @@ def AssignHierarchy(NODES):
                 potentialmanager.add_child(potentialsubordinate)
 
     return NODES
-
-def AddNewEmployee(employee,manager):
-    #Call EmployeeNode class function 'add_child'
-    manager.add_child(employee)
-    return 0
 
 #GetDataFromFirestore()
 

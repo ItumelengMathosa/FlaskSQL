@@ -84,6 +84,29 @@
     .tree > li > span:before {
       outline: none;
     }
+
+    form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
     </style>
     
 <!-- CSS to create tree display sourced from https://codepen.io/ross-angus/pen/jwxMjL-->
@@ -101,6 +124,36 @@
             {{htmlcontent}}
         {% endautoescape %}
     </ul>
+
+    <!--Form for adding a new Employee-->
+    <div>
+        <h2 for="employeeForm">Add New Employee</h2>
+        <form id="employeeForm">
+            <label for="employeeId">Employee ID:</label>
+            <input type="text" id="employeeId" name="employeeId" required>
+
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="birthDate">Birth Date:</label>
+            <input type="date" id="birthDate" name="birthDate" required>
+
+            <label for="managerId">Manager ID:</label>
+            <input type="text" id="managerId" name="managerId">
+
+            <label for="employeeNumber">Employee Number:</label>
+            <input type="text" id="employeeNumber" name="employeeNumber" required>
+
+            <label for="role">Role:</label>
+            <input type="text" id="role" name="role" required>
+
+            <label for="salary">Salary:</label>
+            <input type="number" id="salary" name="salary" required>
+
+            <button type="submit">Submit</button>
+        </form>  
+    </div>
+    
 
     <script>
         function HandleNodeClick(nodeName) {

@@ -9,6 +9,7 @@ app = Flask(__name__)
 
 #SQL
 
+"""
 employees = [
     {'ID': 1, 'Name': 'CEO', 'ReportsToID': None},
     {'ID': 2, 'Name': 'Manager1', 'ReportsToID': 1},
@@ -17,7 +18,7 @@ employees = [
     {'ID': 5, 'Name': 'Employee2', 'ReportsToID': 2},
     {'ID': 6, 'Name': 'Employee3', 'ReportsToID': 3},
     {'ID': 7, 'Name': 'Employee4', 'ReportsToID': 3},
-    ]
+    ]"""
 
 #Configure SQL Connection
 #________________________________________________________________________________________________________________________________________________________________________________________________________
@@ -112,14 +113,24 @@ def EmployeeTree():
     #Retrieves data from firestore, and calls other functions to create tree structure using root node
     GetDataFromFirestore(root)
 
+    #Generates html to be displayed on to web page using 'render_template'
     htmlcontent = root.generate_tree_html()
 
     return render_template("EmployeeTree.html",htmlcontent=htmlcontent)
 
-@app.route('/UpdateTree', methods=['POST', 'GET'])
-def UpdateTree():
-    
-    return
+@app.route('/AddNewEmployee', methods=['POST', 'GET'])
+def AddNewEmployee():
+
+    node = EmployeeNode(id,name,birthdate,employeenumber,salary,role,parentid)
+    AddNewEmployeeToDatabase(node)
+
+    return redirect('EmployeeTree.html')
+
+@app.route('/DeleteEmployee', methods=['POST','GET'])
+def DeleteEmployee():
+    node = EmployeeNode(id,name,birthdate,employeenumber,salary,role,parentid)
+    DeleteEmployeeFromDataBase(node)
+    return redirect('EmployeeTree.html')
 
 @app.route('/EmployeeTable')
 def EmployeeTable():
