@@ -33,26 +33,25 @@ class EmployeeNode:
                 child.print_tree()
 
     def generate_tree_html(self):
-        #creates first list item with self.name and self.Role as value to be displayed
-        #HandleNodeClick takes all EmployeeNode class variables as arguments
-        #\'{self.name}\' converts self.name to a string object for the HandleNodeClick function
-
-        if self.Role == None:
-            html =f'<li id="\'{self.ID}\'"><span onclick="HandleNodeClick(\'{self.Name}\',\'{self.ID}\',\'{self.ManagerID}\',\'{self.BirthDate}\',\'{self.EmployeeNumber}\',\'{self.Salary}\',\'{self.Role}\')"><p>{self.Name}</p></span>'
+        # creates the first list item with self.name and self.Role as values to be displayed
+        # HandleNodeClick takes all EmployeeNode class variables as arguments
+        # \'{self.name}\' converts self.name to a string object for the HandleNodeClick function
+        NodeTitle = f"ID: {self.ID}\n Manager's ID: {self.ManagerID}\n Employee Number: {self.EmployeeNumber}"
+        if self.Role is None:
+            html = f'<li id="\'{self.EmployeeNumber}\'" title="{NodeTitle}"><span onclick="HandleNodeClick(\'{self.Name}\',\'{self.ID}\',\'{self.ManagerID}\',\'{self.BirthDate}\',\'{self.EmployeeNumber}\',\'{self.Salary}\',\'{self.Role}\')"><p>{self.Name}</p></span>'
         else:
-            html = f'<li id="\'{self.ID}\'"><span onclick="HandleNodeClick(\'{self.Name}\',\'{self.ID}\',\'{self.ManagerID}\',\'{self.BirthDate}\',\'{self.EmployeeNumber}\',\'{self.Salary}\',\'{self.Role}\')"><p>{self.Name}</p>{self.Role}</span>'
-        
+            html = f'<li id="\'{self.EmployeeNumber}\'" title="{NodeTitle}"><span onclick="HandleNodeClick(\'{self.Name}\',\'{self.ID}\',\'{self.ManagerID}\',\'{self.BirthDate}\',\'{self.EmployeeNumber}\',\'{self.Salary}\',\'{self.Role}\')"><p>{self.Name}</p>{self.Role}</span>'
+
         if self.children:
-            #if self.name has children, create unordered list and call the function recursively for each child
+            # if self.name has children, create an unordered list and call the function recursively for each child
             html += '<ul>'
             for child in self.children:
                 html += child.generate_tree_html()
-            #add unordered list closing tag
+            # add unordered list closing tag
             html += '</ul>'
-        #add list item closing tag
+        # add list item closing tag
         html += '</li>'
 
-        
         return html
 
 

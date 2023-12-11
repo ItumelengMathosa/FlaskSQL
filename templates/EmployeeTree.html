@@ -16,8 +16,6 @@
             margin: 25%;
             font-family: Arial, sans-serif;
         }
-
-        
        
 
         /* It's supposed to look like a tree diagram */
@@ -153,6 +151,13 @@
             box-sizing: border-box;
             margin-bottom: 16px;
         }
+        select{
+            display: inline-block;
+            width: calc(100% - 16px); /* Adjust the width and margin as needed */
+            padding: 8px;
+            box-sizing: border-box;
+            margin-bottom: 16px;
+        }
     </style>
 
     <!-- CSS to create tree display sourced from https://codepen.io/ross-angus/pen/jwxMjL-->
@@ -211,8 +216,10 @@
                 <label for="editNodeBirthDateInput">Birth Date:</label>
                 <input type="date" id="editNodeBirthDateInput" name="editNodeBirthDateInput" required>
     
-                <label for="editNodeManagerIdInput">Select New Manager:</label><br>
-                <input type="text" id="editNodeManagerIdInput" name="editNodeManagerIdInput" readonly required>
+                <label for="editNodeManagerIdInput">Manager ID:</label>
+                <select id="editNodeManagerIdInput" name="editNodeManagerIdInput" required>
+                    <!-- Options will be dynamically generated here -->
+                </select>
     
                 <label for="editNodeEmployeeNumberInput">Employee Number:</label>
                 <input type="text" id="editNodeEmployeeNumberInput" name="editNodeEmployeeNumberInput" readonly required>
@@ -245,7 +252,7 @@
     <script>
         //handleNodeClick is called in 'EmployeeTree.py' in the generate_tree_html() function. 
         //Every node or 'li' has HandleNodeClick inside of their html element tag
-        function HandleNodeClick(nodeName, nodeID, managerId, birthDate, role, salary, employeeNumber) {
+        function HandleNodeClick(nodeName, nodeID, managerId, birthDate, employeeNumber, salary, role) {
             // Update the input element with the clicked node's information
 
             document.getElementById('deletionNodeIDInput').value = nodeID;
@@ -260,12 +267,46 @@
             document.getElementById('editNodeIDInput').value = nodeID;
             document.getElementById('editNodeNameInput').value = nodeName;
             document.getElementById('editNodeBirthDateInput').value = birthDate;
-            
+
             //document.getElementById('editNodeManagerIdInput').value = managerId;
             document.getElementById('editNodeEmployeeNumberInput').value = employeeNumber;
             document.getElementById('editNodeRoleInput').value = role;
             document.getElementById('editNodeSalaryInput').value = salary;
         }
+
+        function populateDropdown() {
+            var dropdown = document.getElementById('editNodeManagerIdInput');
+            var nodeNames = [];
+
+            // Iterate through all <li> elements on the page
+            var listItems = document.querySelectorAll('li');
+            listItems.forEach(function (li) {
+                var nodeName = li.getAttribute('id'); // Get the 'id' attribute of the <li>
+                if (nodeName) {
+                    nodeNames.push(nodeName.trim());
+                }
+            });
+
+            // Clear existing options
+            dropdown.innerHTML = '';
+
+            // Add a default empty option
+            var defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.text = 'Select a Manager';
+            dropdown.appendChild(defaultOption);
+
+            // Add options for each node name
+            for (var i = 0; i < nodeNames.length; i++) {
+                var option = document.createElement('option');
+                option.value = nodeNames[i];
+                option.text = nodeNames[i];
+                dropdown.appendChild(option);
+            }
+        }
+
+    // Call the function to populate the dropdown
+    populateDropdown();
     </script>
 
 </body>
