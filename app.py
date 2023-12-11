@@ -151,8 +151,20 @@ def AddNewEmployee():
 
 @app.route('/EditEmployee', methods=['POST', 'GET'])
 def EditEmployee():
-    empID = request.form.get('editNodeNameInput')
-    parentID = request.form.get('')
+    empID = int(request.form.get('editNodeIDInput'))
+    name = request.form.get('editNodeNameInput')
+    birthDate = request.form.get('editNodeBirthDateInput')
+    #strip("'") removes single quotes from retrieved data so that it can be converted to an interger
+    managerID = int(request.form.get('editNodeManagerIdInput').strip("'"))
+    employeeNumber = request.form.get('editNodeEmployeeNumberInput')
+    role = request.form.get('editNodeRoleInput')
+    salary = int(request.form.get('editNodeSalaryInput'))
+
+    node = EmployeeNode(empID,name,birthDate,employeeNumber,salary,role,managerID)
+
+    DeleteEmployeeFromDataBase(employeeNumber)
+
+    AddNewEmployeeToDatabase(node)
     return redirect('/EmployeeTree')
 
 @app.route('/DeleteEmployee', methods=['POST','GET'])

@@ -203,7 +203,7 @@
                 <button type="submit">Add New Employee</button>
             </form>
 
-            <form id="EditEmployeeForm">
+            <form id="EditEmployeeForm" action="/EditEmployee" method="post">
 
                 <h2>Edit Employee</h2>
 
@@ -216,8 +216,8 @@
                 <label for="editNodeBirthDateInput">Birth Date:</label>
                 <input type="date" id="editNodeBirthDateInput" name="editNodeBirthDateInput" required>
     
-                <label for="editNodeManagerIdInput">Manager ID:</label>
-                <select id="editNodeManagerIdInput" name="editNodeManagerIdInput" required>
+                <label for="editNodeManagerIdInput">New Manager ID:</label>
+                <select id="editNodeManagerIdInput" name="editNodeManagerIdInput" aria-placeholder="Select '0' for no manager" required>
                     <!-- Options will be dynamically generated here -->
                 </select>
     
@@ -283,7 +283,7 @@
             listItems.forEach(function (li) {
                 var nodeName = li.getAttribute('id'); // Get the 'id' attribute of the <li>
                 if (nodeName) {
-                    nodeNames.push(nodeName.trim());
+                    nodeNames.push(nodeName);
                 }
             });
 
@@ -293,14 +293,14 @@
             // Add a default empty option
             var defaultOption = document.createElement('option');
             defaultOption.value = '';
-            defaultOption.text = 'Select a Manager';
+            defaultOption.text = 'Select new Manager ID (Select "0" for no manager)';
             dropdown.appendChild(defaultOption);
 
             // Add options for each node name
             for (var i = 0; i < nodeNames.length; i++) {
                 var option = document.createElement('option');
                 option.value = nodeNames[i];
-                option.text = nodeNames[i];
+                option.text = nodeNames[i].toString();
                 dropdown.appendChild(option);
             }
         }

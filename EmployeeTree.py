@@ -26,21 +26,16 @@ class EmployeeNode:
         child.ManagerID=None
 
 
-    def print_tree(self, indent=0):
-        print(self.name)
-        if len(self.children) > 0:
-            for child in self.children:
-                child.print_tree()
-
+    
     def generate_tree_html(self):
         # creates the first list item with self.name and self.Role as values to be displayed
         # HandleNodeClick takes all EmployeeNode class variables as arguments
         # \'{self.name}\' converts self.name to a string object for the HandleNodeClick function
         NodeTitle = f"ID: {self.ID}\n Manager's ID: {self.ManagerID}\n Employee Number: {self.EmployeeNumber}"
         if self.Role is None:
-            html = f'<li id="\'{self.EmployeeNumber}\'" title="{NodeTitle}"><span onclick="HandleNodeClick(\'{self.Name}\',\'{self.ID}\',\'{self.ManagerID}\',\'{self.BirthDate}\',\'{self.EmployeeNumber}\',\'{self.Salary}\',\'{self.Role}\')"><p>{self.Name}</p></span>'
+            html = f'<li id="\'{self.ID}\'" title="{NodeTitle}"><span onclick="HandleNodeClick(\'{self.Name}\',\'{self.ID}\',\'{self.ManagerID}\',\'{self.BirthDate}\',\'{self.EmployeeNumber}\',\'{self.Salary}\',\'{self.Role}\')"><p>{self.Name}</p></span>'
         else:
-            html = f'<li id="\'{self.EmployeeNumber}\'" title="{NodeTitle}"><span onclick="HandleNodeClick(\'{self.Name}\',\'{self.ID}\',\'{self.ManagerID}\',\'{self.BirthDate}\',\'{self.EmployeeNumber}\',\'{self.Salary}\',\'{self.Role}\')"><p>{self.Name}</p>{self.Role}</span>'
+            html = f'<li id="\'{self.ID}\'" title="{NodeTitle}"><span onclick="HandleNodeClick(\'{self.Name}\',\'{self.ID}\',\'{self.ManagerID}\',\'{self.BirthDate}\',\'{self.EmployeeNumber}\',\'{self.Salary}\',\'{self.Role}\')"><p>{self.Name}</p>{self.Role}</span>'
 
         if self.children:
             # if self.name has children, create an unordered list and call the function recursively for each child
@@ -85,8 +80,8 @@ def AddNewEmployeeToDatabase(employee):
     db.collection("Employees").document(str(data['EmployeeNumber'])).set(data)
     return 0
 
-def DeleteEmployeeFromDataBase(employee):
-    db.collection("Employees").document(str(employee.EmployeeNumber)).delete()
+def DeleteEmployeeFromDataBase(employeeNumber):
+    db.collection("Employees").document(str(employeeNumber)).delete()
     return 0
 
 def BuildTree():
