@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,33 +8,48 @@
 
     <style>
         body {
-  font-family: Calibri, Segoe, "Segoe UI", "Gill Sans", "Gill Sans MT", sans-serif;
-}
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 15%;
+            font-family: Arial, sans-serif;
+        }
 
-/* It's supposed to look like a tree diagram */
-.tree, .tree ul, .tree li {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    position: relative;
-}
+        
+       
 
-.tree {
-    margin: 0 0 1em;
-    text-align: center;
-}
-.tree, .tree ul {
-    display: table;
-}
-.tree ul {
-  width: 100%;
-}
-    .tree li {
-        display: table-cell;
-        padding: .5em 0;
-        vertical-align: top;
-    }
-        /* _________ */
+        /* It's supposed to look like a tree diagram */
+        .tree,
+        .tree ul,
+        .tree li {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+
+        .tree {
+            margin: 1em 0; /* Adjust margin as needed */
+            text-align: center;
+        }
+
+        .tree,
+        .tree ul {
+            display: table;
+        }
+
+        .tree ul {
+            width: 100%;
+        }
+
+        .tree li {
+            display: table-cell;
+            padding: .5em 0;
+            vertical-align: top;
+        }
+
         .tree li:before {
             outline: solid 1px #666;
             content: "";
@@ -42,60 +58,81 @@
             right: 0;
             top: 0;
         }
-        .tree li:first-child:before {left: 50%;}
-        .tree li:last-child:before {right: 50%;}
 
-        .tree code, .tree span {
-            border: solid .1em #666;
+        .tree li:first-child:before {
+            left: 50%;
+        }
+
+        .tree li:last-child:before {
+            right: 50%;
+        }
+
+        .tree code,
+        .tree span {
+            border: solid .1em #727171;
             border-radius: .2em;
             display: inline-block;
             margin: 0 .2em .5em;
             padding: .2em .5em;
             position: relative;
         }
-        /* If the tree represents DOM structure */
+
         .tree code {
             font-family: monaco, Consolas, 'Lucida Console', monospace;
         }
 
-            /* | */
-            .tree ul:before,
-            .tree code:before,
-            .tree span:before {
-                outline: solid 1px #666;
-                content: "";
-                height: .5em;
-                left: 50%;
-                position: absolute;
-            }
-            .tree ul:before {
-                top: -.5em;
-            }
-            .tree code:before,
-            .tree span:before {
-                top: -.55em;
-            }
-
-/* The root node doesn't connect upwards */
-.tree > li {margin-top: 0;}
-    .tree > li:before,
-    .tree > li:after,
-    .tree > li > code:before,
-    .tree > li > span:before {
-      outline: none;
-    }
-
-    form {
-            max-width: 400px;
-            margin: 0 auto;
+        .tree ul:before,
+        .tree code:before,
+        .tree span:before {
+            outline: solid 1px #727171;
+            content: "";
+            height: .5em;
+            left: 50%;
+            position: absolute;
         }
 
-    label {
-        display: block;
-        margin-bottom: 8px;
-    }
+        .tree ul:before {
+            top: -.5em;
+        }
 
-    button {
+        .tree code:before,
+        .tree span:before {
+            top: -.55em;
+        }
+
+        .tree>li {
+            margin-top: 0;
+        }
+
+        .tree>li:before,
+        .tree>li:after,
+        .tree>li>code:before,
+        .tree>li>span:before {
+            outline: none;
+        }
+
+        form {
+            width: 300px;
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-top: 1em; /* Add margin between the tree and the form */
+        }
+
+        .form-container{
+            display: flex;
+            justify-content: space-around;
+        }
+        
+
+        label {
+            display: inline;
+            margin-bottom: 8px;
+            text-align: left;
+        }
+
+        button {
             background-color: #4CAF50;
             color: white;
             padding: 10px 15px;
@@ -107,60 +144,115 @@
         button:hover {
             background-color: #45a049;
         }
+
+        input {
+            display: inline-block;
+            width: calc(100% - 16px); /* Adjust the width and margin as needed */
+            padding: 8px;
+            box-sizing: border-box;
+            margin-bottom: 16px;
+        }
     </style>
-    
-<!-- CSS to create tree display sourced from https://codepen.io/ross-angus/pen/jwxMjL-->
 
-
+    <!-- CSS to create tree display sourced from https://codepen.io/ross-angus/pen/jwxMjL-->
 </head>
+
 <body>
-    <!-- Input element to display clicked node's name -->
-    <input type="text" id="selectedNodeInput" placeholder="Selected Node" readonly>
-
-    <!-- Apply CSS to generated Multi-Tree passed from 'EmployeeTree' function-->
-    <ul class="tree">
-        <!-- autoescape renders the 'htmlcontent' variable as actual html code and not just a string variable -->
-        {% autoescape off%}
-            {{htmlcontent}}
-        {% endautoescape %}
-    </ul>
-
-    <!--Form for adding a new Employee-->
-    <div>
-        <h2 for="employeeForm">Add New Employee</h2>
-        <form id="employeeForm">
-            <label for="employeeId">Employee ID:</label>
-            <input type="text" id="employeeId" name="employeeId" required>
-
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
-
-            <label for="birthDate">Birth Date:</label>
-            <input type="date" id="birthDate" name="birthDate" required>
-
-            <label for="managerId">Manager ID:</label>
-            <input type="text" id="managerId" name="managerId">
-
-            <label for="employeeNumber">Employee Number:</label>
-            <input type="text" id="employeeNumber" name="employeeNumber" required>
-
-            <label for="role">Role:</label>
-            <input type="text" id="role" name="role" required>
-
-            <label for="salary">Salary:</label>
-            <input type="number" id="salary" name="salary" required>
-
-            <button type="submit">Submit</button>
-        </form>  
-    </div>
     
+
+    <!-- CSS applied to generated Multi-Tree passed from 'EmployeeTree' function-->
+    <div>
+        
+
+        <ul class="tree">
+            <!-- autoescape renders the 'htmlcontent' variable as actual html code and not just a string variable -->
+            {% autoescape off%}
+            {{htmlcontent}}
+            {% endautoescape %}
+        </ul>
+
+        <!-- Form for adding a new Employee -->
+
+        <div class="form-container">
+
+            <form id="AddEmployeeForm">
+                <h2>Add New Employee</h2>
+                <label for="employeeId">Employee ID:</label>
+                <input type="text" id="employeeId" name="employeeId" required>
+    
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+    
+                <label for="birthDate">Birth Date:</label>
+                <input type="date" id="birthDate" name="birthDate" required>
+    
+                <label for="managerId">Manager ID:</label>
+                <input type="text" id="managerId" name="managerId">
+    
+                <label for="employeeNumber">Employee Number:</label>
+                <input type="text" id="employeeNumber" name="employeeNumber" required>
+    
+                <label for="role">Role:</label>
+                <input type="text" id="role" name="role" required>
+    
+                <label for="salary">Salary:</label>
+                <input type="number" id="salary" name="salary" required>
+    
+                <button type="submit">Add New Employee</button>
+            </form>
+
+            <form id="EditEmployeeForm">
+
+                <h2>Edit Employee</h2>
+
+                <label for="editNodeInput">Employee ID:</label>
+                <input type="text" id="editNodeInput" name="editNodeInput" placeholder="Selected Node" required readonly>
+    
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+    
+                <label for="birthDate">Birth Date:</label>
+                <input type="date" id="birthDate" name="birthDate" required>
+    
+                <label for="managerId">Manager ID:</label>
+                <input type="text" id="managerId" name="managerId">
+    
+                <label for="employeeNumber">Employee Number:</label>
+                <input type="text" id="employeeNumber" name="employeeNumber" required>
+    
+                <label for="role">Role:</label>
+                <input type="text" id="role" name="role" required>
+    
+                <label for="salary">Salary:</label>
+                <input type="number" id="salary" name="salary" required>
+    
+                <button type="submit">Edit</button>
+            </form>
+
+            <form id="DeleteEmployeeForm">
+                <h2>Delete Employee</h2>
+
+                <label for="deletionNodeInput">Employee ID:</label>
+                <input type="text" id="deletionNodeInput" name="deletionNodeInput" placeholder="Selected Node" required readonly>
+                
+                <button type="submit">Delete</button>
+            </form>
+            
+        </div>
+        
+    </div>
 
     <script>
         function HandleNodeClick(nodeName) {
-            // Update the input element with the clicked node's name
-            document.getElementById('selectedNodeInput').value = nodeName;
+            // Update the input element with the clicked node's information
+            //document.getElementById('selectedNodeInput').value = nodeName;
+
+            document.getElementById('deletionNodeInput').value = nodeName;
+
+            document.getElementById('editNodeInput').value = nodeName;
         }
     </script>
-    
+
 </body>
+
 </html>
