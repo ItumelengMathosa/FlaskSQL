@@ -13,7 +13,7 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
-            margin: 15%;
+            margin: 25%;
             font-family: Arial, sans-serif;
         }
 
@@ -128,6 +128,7 @@
 
         label {
             display: inline;
+            margin-top: 16px;
             margin-bottom: 8px;
             text-align: left;
         }
@@ -186,7 +187,7 @@
                 <input type="date" id="birthDate" name="birthDate" required>
     
                 <label for="addNodeManagerId">Manager ID:</label>
-                <input type="text" id="addNodeManagerId" name="addNodeManagerId" placeholder="Manager's ID" required readonly>
+                <input type="text" id="addNodeManagerId" name="addNodeManagerId" placeholder="Click on node to assign manager" required readonly>
     
                 <label for="role">Role:</label>
                 <input type="text" id="role" name="role" required>
@@ -207,20 +208,20 @@
                 <label for="editNodeNameInput">Name:</label>
                 <input type="text" id="editNodeNameInput" name="editNodeNameInput" required>
     
-                <label for="birthDate">Birth Date:</label>
-                <input type="date" id="birthDate" name="birthDate" required>
+                <label for="editNodeBirthDateInput">Birth Date:</label>
+                <input type="date" id="editNodeBirthDateInput" name="editNodeBirthDateInput" required>
     
-                <label for="managerId">Manager ID:</label>
-                <input type="text" id="managerId" name="managerId">
+                <label for="editNodeManagerIdInput">Select New Manager:</label><br>
+                <input type="text" id="editNodeManagerIdInput" name="editNodeManagerIdInput" readonly required>
     
-                <label for="employeeNumber">Employee Number:</label>
-                <input type="text" id="employeeNumber" name="employeeNumber" required>
+                <label for="editNodeEmployeeNumberInput">Employee Number:</label>
+                <input type="text" id="editNodeEmployeeNumberInput" name="editNodeEmployeeNumberInput" readonly required>
     
-                <label for="role">Role:</label>
-                <input type="text" id="role" name="role" required>
+                <label for="editNodeRoleInput">Role:</label>
+                <input type="text" id="editNodeRoleInput" name="editNodeRoleInput" required>
     
-                <label for="salary">Salary:</label>
-                <input type="number" id="salary" name="salary" required>
+                <label for="editNodeSalaryInput">Salary:</label>
+                <input type="number" id="editNodeSalaryInput" name="editNodeSalaryInput" required>
     
                 <button type="submit">Edit</button>
             </form>
@@ -244,17 +245,26 @@
     <script>
         //handleNodeClick is called in 'EmployeeTree.py' in the generate_tree_html() function. 
         //Every node or 'li' has HandleNodeClick inside of their html element tag
-        function HandleNodeClick(nodeName, nodeID, managerId) {
+        function HandleNodeClick(nodeName, nodeID, managerId, birthDate, role, salary, employeeNumber) {
             // Update the input element with the clicked node's information
-            //document.getElementById('selectedNodeInput').value = nodeName;
 
             document.getElementById('deletionNodeIDInput').value = nodeID;
             document.getElementById('deletionNodeNameInput').value = nodeName;
 
+            
+            //Sets the addNodeManagerID in 'Add Employee' form's value equal to the node that was clicked
+            document.getElementById('addNodeManagerId').value = nodeID;
+
+            //Sets all inputs in 'Edit Employee' form equal to all values of node that was clicked
+
             document.getElementById('editNodeIDInput').value = nodeID;
             document.getElementById('editNodeNameInput').value = nodeName;
-
-            document.getElementById('addNodeManagerId').value = managerId;
+            document.getElementById('editNodeBirthDateInput').value = birthDate;
+            
+            //document.getElementById('editNodeManagerIdInput').value = managerId;
+            document.getElementById('editNodeEmployeeNumberInput').value = employeeNumber;
+            document.getElementById('editNodeRoleInput').value = role;
+            document.getElementById('editNodeSalaryInput').value = salary;
         }
     </script>
 

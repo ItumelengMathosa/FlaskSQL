@@ -33,9 +33,14 @@ class EmployeeNode:
                 child.print_tree()
 
     def generate_tree_html(self):
-        #creates first list item with self.name as value to be displayed
+        #creates first list item with self.name and self.Role as value to be displayed
+        #HandleNodeClick takes all EmployeeNode class variables as arguments
         #\'{self.name}\' converts self.name to a string object for the HandleNodeClick function
-        html = f'<li id="\'{self.ID}\'"><span onclick="HandleNodeClick(\'{self.Name}\',\'{self.ID}\',\'{self.ManagerID}\')">{self.Name}<br>{self.Role}</span>'
+
+        if self.Role == None:
+            html =f'<li id="\'{self.ID}\'"><span onclick="HandleNodeClick(\'{self.Name}\',\'{self.ID}\',\'{self.ManagerID}\',\'{self.BirthDate}\',\'{self.EmployeeNumber}\',\'{self.Salary}\',\'{self.Role}\')"><p>{self.Name}</p></span>'
+        else:
+            html = f'<li id="\'{self.ID}\'"><span onclick="HandleNodeClick(\'{self.Name}\',\'{self.ID}\',\'{self.ManagerID}\',\'{self.BirthDate}\',\'{self.EmployeeNumber}\',\'{self.Salary}\',\'{self.Role}\')"><p>{self.Name}</p>{self.Role}</span>'
         
         if self.children:
             #if self.name has children, create unordered list and call the function recursively for each child

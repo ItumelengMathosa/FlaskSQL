@@ -131,9 +131,10 @@ def AddNewEmployee():
         #Generates a random number to act as an Employee's ID and checks iif the number exists in the database
         while not AcceptableID:
             empid = GenerateRandomNumber()
-            if(not CheckIfIDInDatabase(empid)):
+            if(not CheckIfValueInDatabase(empid)):
                 AcceptableID = True
-                
+
+        #Generates employee number using above 'empid' and f'E{employee_id:03d}' format  
         employeeNumber = GenerateEmployeeNumber(empid)
 
         name = request.form.get("name")
@@ -141,17 +142,23 @@ def AddNewEmployee():
         
         salary = int(request.form.get("salary"))
         role = request.form.get("role")
-        parentid = int(request.form.get("managerId"))
+        parentid = int(request.form.get("addNodeManagerId"))
 
-        node = EmployeeNode(empid,name,birthdate,employeenumber,salary,role,parentid)
+        node = EmployeeNode(empid,name,birthdate,employeeNumber,salary,role,parentid)
         AddNewEmployeeToDatabase(node)
 
         return redirect('/EmployeeTree')
 
+@app.route('/EditEmployee', methods=['POST', 'GET'])
+def EditEmployee():
+    empID = request.form.get('editNodeNameInput')
+    parentID = request.form.get('')
+    return redirect('/EmployeeTree')
+
 @app.route('/DeleteEmployee', methods=['POST','GET'])
 def DeleteEmployee():
-    node = EmployeeNode(id,name,birthdate,employeenumber,salary,role,parentid)
-    DeleteEmployeeFromDataBase(node)
+    #node = EmployeeNode(id,name,birthdate,employeeNumber,salary,role,parentid)
+    #DeleteEmployeeFromDataBase(node)
     return redirect('EmployeeTree.html')
 
 @app.route('/EmployeeTable')

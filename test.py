@@ -46,3 +46,56 @@ def GenerateEmployeeNumber(employee_id):
     return f'E{employee_id:03d}'
 
 print(GenerateEmployeeNumber(1000))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"""
+// Function to populate the dropdown with node names from existing <li> elements
+        function populateDropdown() {
+            var dropdown = document.getElementById('editNodeManagerIdInput');
+            var nodeNames = [];
+
+            // Iterate through all <li> elements on the page
+            var listItems = document.querySelectorAll('li span p');
+
+            for (var i = 1; i < listItems.length; i++) {
+            var span = listItems[i];
+            var nodeName = span.textContent.trim(); // Get the text content of the <span> and trim any whitespace
+            nodeNames.push(nodeName);
+        }
+
+            // Clear existing options
+            dropdown.innerHTML = '';
+
+            // Add a default empty option
+            var defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.text = 'Select a Manager';
+            dropdown.appendChild(defaultOption);
+
+            // Add options for each node name
+            for (var i = 0; i < nodeNames.length; i++) {
+                var option = document.createElement('option');
+                option.value = nodeNames[i];
+                option.text = nodeNames[i];
+                dropdown.appendChild(option);
+            }
+        }
+
+        // Call the function to populate the dropdown
+        populateDropdown();"""
