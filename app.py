@@ -121,7 +121,15 @@ def EmployeeTree():
 @app.route('/AddNewEmployee', methods=['POST', 'GET'])
 def AddNewEmployee():
 
-    node = EmployeeNode(id,name,birthdate,employeenumber,salary,role,parentid)
+    empid = request.form.get("employeeId")
+    name = request.form.get("name")
+    birthdate = request.form.get("birthDate")
+    employeenumber = request.form.get("employeeNumber")
+    salary = request.form.get("salary")
+    role = request.form.get("role")
+    parentid = request.form.get("managerId")
+
+    node = EmployeeNode(empid,name,birthdate,employeenumber,salary,role,parentid)
     AddNewEmployeeToDatabase(node)
 
     return redirect('EmployeeTree.html')
