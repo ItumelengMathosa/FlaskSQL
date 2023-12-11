@@ -33,6 +33,7 @@ class EmployeeNode:
         self.children = []
         self.parentID = parentID
 
+
 docs = db.collection("Employees").stream()
 NODES=[]
 for doc in docs:
@@ -41,3 +42,7 @@ for doc in docs:
 #Database Methods
 #________________________________________________________________________________________________________________________________________________________________________________________________________
 
+def GenerateEmployeeNumber(employee_id):
+    return f'E{employee_id:03d}'
+
+print(GenerateEmployeeNumber(1000))

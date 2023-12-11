@@ -3,11 +3,11 @@ from flask_session import Session
 from flask_mysqldb import MySQL
 import json
 
+import random
+
 from EmployeeTree import *
 
 app = Flask(__name__)
-
-#SQL
 
 """
 employees = [
@@ -20,15 +20,18 @@ employees = [
     {'ID': 7, 'Name': 'Employee4', 'ReportsToID': 3},
     ]"""
 
-#Configure SQL Connection
+#Generate Random Number
 #________________________________________________________________________________________________________________________________________________________________________________________________________
 
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'collegesystem'
+def GenerateRandomNumber():
 
-db = MySQL(app)
+    # Generate a random integer between 1 and 10000
+    random_number = random.randint(1, 10000)
+    return random_number
+
+def GenerateEmployeeNumber(employee_id):
+    return f'E{employee_id:03d}'
+
 #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 
 
@@ -121,18 +124,29 @@ def EmployeeTree():
 @app.route('/AddNewEmployee', methods=['POST', 'GET'])
 def AddNewEmployee():
 
-    empid = request.form.get("employeeId")
-    name = request.form.get("name")
-    birthdate = request.form.get("birthDate")
-    employeenumber = request.form.get("employeeNumber")
-    salary = request.form.get("salary")
-    role = request.form.get("role")
-    parentid = request.form.get("managerId")
+    if request.method == 'POST':
 
-    node = EmployeeNode(empid,name,birthdate,employeenumber,salary,role,parentid)
-    AddNewEmployeeToDatabase(node)
+        AcceptableID = False
 
-    return redirect('EmployeeTree.html')
+        #Generates a random number to act as an Employee's ID and checks iif the number exists in the database
+        while not AcceptableID:
+            empid = GenerateRandomNumber()
+            if(not CheckIfIDInDatabase(empid)):
+                AcceptableID = True
+                
+        employeeNumber = GenerateEmployeeNumber(empid)
+
+        name = request.form.get("name")
+        birthdate = request.form.get("birthDate")
+        
+        salary = int(request.form.get("salary"))
+        role = request.form.get("role")
+        parentid = int(request.form.get("managerId"))
+
+        node = EmployeeNode(empid,name,birthdate,employeenumber,salary,role,parentid)
+        AddNewEmployeeToDatabase(node)
+
+        return redirect('/EmployeeTree')
 
 @app.route('/DeleteEmployee', methods=['POST','GET'])
 def DeleteEmployee():

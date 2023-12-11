@@ -175,10 +175,9 @@
 
         <div class="form-container">
 
-            <form id="AddEmployeeForm">
+            <form id="AddEmployeeForm" action="/AddNewEmployee" method="post">
                 <h2>Add New Employee</h2>
-                <label for="employeeId">Employee ID:</label>
-                <input type="text" id="employeeId" name="employeeId" required>
+                
     
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" required>
@@ -186,11 +185,8 @@
                 <label for="birthDate">Birth Date:</label>
                 <input type="date" id="birthDate" name="birthDate" required>
     
-                <label for="managerId">Manager ID:</label>
-                <input type="text" id="managerId" name="managerId">
-    
-                <label for="employeeNumber">Employee Number:</label>
-                <input type="text" id="employeeNumber" name="employeeNumber" required>
+                <label for="addNodeManagerId">Manager ID:</label>
+                <input type="text" id="addNodeManagerId" name="addNodeManagerId" placeholder="Manager's ID" required readonly>
     
                 <label for="role">Role:</label>
                 <input type="text" id="role" name="role" required>
@@ -205,11 +201,11 @@
 
                 <h2>Edit Employee</h2>
 
-                <label for="editNodeInput">Employee ID:</label>
-                <input type="text" id="editNodeInput" name="editNodeInput" placeholder="Selected Node" required readonly>
+                <label for="editNodeIDInput">Employee ID:</label>
+                <input type="text" id="editNodeIDInput" name="editNodeIDInput" placeholder="Selected ID" required readonly>
     
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
+                <label for="editNodeNameInput">Name:</label>
+                <input type="text" id="editNodeNameInput" name="editNodeNameInput" required>
     
                 <label for="birthDate">Birth Date:</label>
                 <input type="date" id="birthDate" name="birthDate" required>
@@ -232,9 +228,12 @@
             <form id="DeleteEmployeeForm">
                 <h2>Delete Employee</h2>
 
-                <label for="deletionNodeInput">Employee ID:</label>
-                <input type="text" id="deletionNodeInput" name="deletionNodeInput" placeholder="Selected Node" required readonly>
+                <label for="deletionNodeIDInput">Employee ID:</label>
+                <input type="text" id="deletionNodeIDInput" name="deletionNodeIDInput" placeholder="Selected Node" required readonly>
                 
+                <label for="deletionNodeNameInput">Employee ID:</label>
+                <input type="text" id="deletionNodeNameInput" name="deletionNodeNameInput" placeholder="Selected Node" required readonly>
+
                 <button type="submit">Delete</button>
             </form>
             
@@ -243,13 +242,19 @@
     </div>
 
     <script>
-        function HandleNodeClick(nodeName) {
+        //handleNodeClick is called in 'EmployeeTree.py' in the generate_tree_html() function. 
+        //Every node or 'li' has HandleNodeClick inside of their html element tag
+        function HandleNodeClick(nodeName, nodeID, managerId) {
             // Update the input element with the clicked node's information
             //document.getElementById('selectedNodeInput').value = nodeName;
 
-            document.getElementById('deletionNodeInput').value = nodeName;
+            document.getElementById('deletionNodeIDInput').value = nodeID;
+            document.getElementById('deletionNodeNameInput').value = nodeName;
 
-            document.getElementById('editNodeInput').value = nodeName;
+            document.getElementById('editNodeIDInput').value = nodeID;
+            document.getElementById('editNodeNameInput').value = nodeName;
+
+            document.getElementById('addNodeManagerId').value = managerId;
         }
     </script>
 
