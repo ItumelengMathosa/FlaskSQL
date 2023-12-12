@@ -3,10 +3,6 @@ from firebase_admin import firestore
 from firebase_admin import credentials
 
 
-
-
-
-
 # Use a service account.
 cred = credentials.Certificate('FireStorePrivateKey\epiuse-bd49f-f86c050ead9b.json')
 
@@ -15,6 +11,7 @@ app = firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 def CheckIfValueInDatabase(value):
+
 
     #Create reference employees_ref for 'Employees' collection in Firestore database
     employees_ref = db.collection("Employees").stream()
@@ -31,3 +28,12 @@ def CheckIfValueInDatabase(value):
             return True
     
     return False
+
+def GetAllRows():
+    data = []
+    data_ref = db.collection("Employees").stream()
+
+    for doc in data_ref:
+        data.append(doc.to_dict())
+
+    return data

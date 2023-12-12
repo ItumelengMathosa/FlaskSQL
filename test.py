@@ -1,4 +1,5 @@
 from InitializeFirestore import *
+import hashlib
 
 employees = [
     {'ID': 101, 'Name': 'John Doe', 'BirthDate': '1990-05-15', 'EmployeeNumber': 'E001', 'Salary': 60000, 'Role': 'Software Engineer', 'ManagerID': None},
@@ -11,6 +12,13 @@ employees = [
     {'ID': 108, 'Name': 'Olivia Brown', 'BirthDate': '1991-12-05', 'EmployeeNumber': 'E008', 'Salary': 75000, 'Role': 'Software Engineer', 'ManagerID': 101},
     {'ID': 109, 'Name': 'Daniel White', 'BirthDate': '1986-06-20', 'EmployeeNumber': 'E009', 'Salary': 85000, 'Role': 'Data Engineer', 'ManagerID': 103},
     {'ID': 110, 'Name': 'Ava Miller', 'BirthDate': '1994-03-08', 'EmployeeNumber': 'E010', 'Salary': 70000, 'Role': 'Marketing Specialist', 'ManagerID': 107}
+]
+
+ValidUsers = [
+    {'Username': 'admin1', 'Password':'03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4'},
+    {'Username': 'admin2', 'Password':'admin2'},
+    {'Username': 'admin3', 'Password':'admin3'},
+    {'Username': 'admin4', 'Password':'admin4'},
 ]
 
 def Populate():
@@ -42,7 +50,7 @@ for doc in docs:
 #Database Methods
 #________________________________________________________________________________________________________________________________________________________________________________________________________
 
-def GenerateEmployeeNumber(employee_id):
+def GenerateEmployeeNumber1(employee_id):
     return f'E{employee_id:03d}'
 
 print(GenerateEmployeeNumber(1000))
@@ -83,6 +91,38 @@ def DeleteEmployeeFromDataBase1(employeeNumber):
         doc_ref.update({"ManagerID": managerID})
     
     db.collection("Employees").document(str(Doc_to_del)).delete()
+
+
+def ValidateUser(username, password, users=ValidUsers):
+    
+    verdict = None
+
+    hashedpassword = Hash(password)
+
+    for user in users:
+        if user['Username'] == username:
+            if user['Password'] == hashedpassword:
+                verdict = True
+                return verdict
+            else:
+                verdict = "Incorrect password"
+                return verdict
+        else:
+            verdict = "Username not found"
+
+    return verdict
+
+def Hash1(value):
+    #Use sha256 hashing library
+    hasher = hashlib.sha256()
+    hasher.update(value.encode('utf-8'))
+    hashedvalue = hasher.hexdigest()
+
+    return hashedvalue
+
+#passw = "scrypt:32768:8:1$0Mwyh4ssZ6qBUt15$90caec5e42057dd7393ecf0eb7fc1f56945a9b20fa880fcb91fd9f7d8c1e47ba99517a5d14cfa5fc95c1b9e7ad93d721a02ecbc002b62a2e77b1612d8142642f"
+#pass1 = Hash("admin2")
+#print(pass1)
 
 
 

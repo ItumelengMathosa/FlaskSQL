@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, url_for, redirect, session
 from flask_session import Session
-from flask_mysqldb import MySQL
-import json
+#from flask_mysqldb import MySQL
+#import json
+from Hash import *
 
 import random
 
@@ -9,16 +10,7 @@ from EmployeeTree import *
 
 app = Flask(__name__)
 
-"""
-employees = [
-    {'ID': 1, 'Name': 'CEO', 'ReportsToID': None},
-    {'ID': 2, 'Name': 'Manager1', 'ReportsToID': 1},
-    {'ID': 3, 'Name': 'Manager2', 'ReportsToID': 1},
-    {'ID': 4, 'Name': 'Employee1', 'ReportsToID': 2},
-    {'ID': 5, 'Name': 'Employee2', 'ReportsToID': 2},
-    {'ID': 6, 'Name': 'Employee3', 'ReportsToID': 3},
-    {'ID': 7, 'Name': 'Employee4', 'ReportsToID': 3},
-    ]"""
+
 
 #Generate Random Number
 #________________________________________________________________________________________________________________________________________________________________________________________________________
@@ -45,30 +37,11 @@ app.config["SESSION_TYPE"] = "filesystem"
 
 Session(app)
 
-ValidUsers = [
-    {'Username': 'admin1', 'password':'admin1'},
-    {'Username': 'admin2', 'password':'admin2'},
-    {'Username': 'admin3', 'password':'admin3'},
-    {'Username': 'admin4', 'password':'admin4'},
-]
-
-def ValidateUser(username, password, users=ValidUsers):
-
-    verdict = None
-
-    for user in users:
-        if user['Username'] == username:
-            if user['password'] == password:
-                verdict = True
-                return verdict
-            else:
-                verdict = "Incorrect password"
-                return verdict
-        else:
-            verdict = "User does not exist"
-            
-    return verdict
-
+#Check if current user is currently logged in to session
+def CheckSession():
+    if session["name"] == None:
+        return False
+    return True
 #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 
 
@@ -89,7 +62,7 @@ def login():
         password = request.form.get("password")
 
         #Validate username and password against list allowed users
-        verdict = ValidateUser(username, password)
+        verdict = ValidateUser(str(username), str(password))
 
         if verdict == True:
             session["name"] = request.form.get("username")
@@ -109,6 +82,10 @@ def logout():
 
 @app.route('/EmployeeTree')
 def EmployeeTree():
+    #Check if someone is logged in
+    cont = CheckSession()
+    if cont == False:
+        return redirect('/login')
 
     #Creates single node for Tree Structure i.e. the root node
     root = BuildTree()
@@ -147,24 +124,26 @@ def AddNewEmployee():
         node = EmployeeNode(empid,name,birthdate,employeeNumber,salary,role,parentid)
         AddNewEmployeeToDatabase(node)
 
-        return redirect('/EmployeeTree')
+    return redirect('/EmployeeTree')
 
 @app.route('/EditEmployee', methods=['POST', 'GET'])
 def EditEmployee():
-    empID = int(request.form.get('editNodeIDInput'))
-    name = request.form.get('editNodeNameInput')
-    birthDate = request.form.get('editNodeBirthDateInput')
-    #strip("'") removes single quotes from retrieved data so that it can be converted to an interger
-    managerID = int(request.form.get('editNodeManagerIdInput').strip("'"))
-    employeeNumber = request.form.get('editNodeEmployeeNumberInput')
-    role = request.form.get('editNodeRoleInput')
-    salary = int(request.form.get('editNodeSalaryInput'))
+    if request.method == 'POST':
 
-    node = EmployeeNode(empID,name,birthDate,employeeNumber,salary,role,managerID)
+        empID = int(request.form.get('editNodeIDInput'))
+        name = request.form.get('editNodeNameInput')
+        birthDate = request.form.get('editNodeBirthDateInput')
+        #strip("'") removes single quotes from retrieved data so that it can be converted to an interger
+        managerID = int(request.form.get('editNodeManagerIdInput').strip("'"))
+        employeeNumber = request.form.get('editNodeEmployeeNumberInput')
+        role = request.form.get('editNodeRoleInput')
+        salary = int(request.form.get('editNodeSalaryInput'))
 
-    DeleteEmployeeFromDataBase(employeeNumber)
+        node = EmployeeNode(empID,name,birthDate,employeeNumber,salary,role,managerID)
 
-    AddNewEmployeeToDatabase(node)
+        DeleteEmployeeFromDataBase(employeeNumber)
+
+        AddNewEmployeeToDatabase(node)
     return redirect('/EmployeeTree')
 
 @app.route('/DeleteEmployee', methods=['POST','GET'])
@@ -175,15 +154,27 @@ def DeleteEmployee():
         name = request.form.get('deletionNodeNameInput')
         employeeNumber = request.form.get('deletionNodeEmployeeNumberInput')
         DeleteEmployeeFromDataBase(str(employeeNumber))
-        return redirect('EmployeeTree')
+
+    return redirect('EmployeeTree')
 
 @app.route('/EmployeeTable')
 def EmployeeTable():
-    return render_template("EmployeeTable.html",employees=employees)
+
+    #Check if someone is logged in
+    cont = CheckSession()
+    if cont == False:
+        return redirect('/login')
+
+    tabledata = GetAllRows()
+    return render_template("EmployeeTable.html",tabledata=tabledata)
 
 
 @app.route('/greet', methods=['GET','POST'])
 def greet():
+    #Check if someone is logged in
+    cont = CheckSession()
+    if cont == False:
+        return redirect('/login')
     return render_template('greet.html', name=session["name"])
 
 

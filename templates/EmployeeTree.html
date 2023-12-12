@@ -5,170 +5,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tree Structure</title>
-
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 25%;
-            font-family: Arial, sans-serif;
-        }
-       
-
-        /* It's supposed to look like a tree diagram */
-        .tree,
-        .tree ul,
-        .tree li {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            position: relative;
-        }
-
-        .tree {
-            margin: 1em 0; /* Adjust margin as needed */
-            text-align: center;
-        }
-
-        .tree,
-        .tree ul {
-            display: table;
-        }
-
-        .tree ul {
-            width: 100%;
-        }
-
-        .tree li {
-            display: table-cell;
-            padding: .5em 0;
-            vertical-align: top;
-        }
-
-        .tree li:before {
-            outline: solid 1px #666;
-            content: "";
-            left: 0;
-            position: absolute;
-            right: 0;
-            top: 0;
-        }
-
-        .tree li:first-child:before {
-            left: 50%;
-        }
-
-        .tree li:last-child:before {
-            right: 50%;
-        }
-
-        .tree code,
-        .tree span {
-            border: solid .1em #727171;
-            border-radius: .2em;
-            display: inline-block;
-            margin: 0 .2em .5em;
-            padding: .2em .5em;
-            position: relative;
-        }
-
-        .tree code {
-            font-family: monaco, Consolas, 'Lucida Console', monospace;
-        }
-
-        .tree ul:before,
-        .tree code:before,
-        .tree span:before {
-            outline: solid 1px #727171;
-            content: "";
-            height: .5em;
-            left: 50%;
-            position: absolute;
-        }
-
-        .tree ul:before {
-            top: -.5em;
-        }
-
-        .tree code:before,
-        .tree span:before {
-            top: -.55em;
-        }
-
-        .tree>li {
-            margin-top: 0;
-        }
-
-        .tree>li:before,
-        .tree>li:after,
-        .tree>li>code:before,
-        .tree>li>span:before {
-            outline: none;
-        }
-
-        form {
-            width: 300px;
-            text-align: center;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            margin-top: 1em; /* Add margin between the tree and the form */
-        }
-
-        .form-container{
-            display: flex;
-            justify-content: space-around;
-        }
-        
-
-        label {
-            display: inline;
-            margin-top: 16px;
-            margin-bottom: 8px;
-            text-align: left;
-        }
-
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        input {
-            display: inline-block;
-            width: calc(100% - 16px); /* Adjust the width and margin as needed */
-            padding: 8px;
-            box-sizing: border-box;
-            margin-bottom: 16px;
-        }
-        select{
-            display: inline-block;
-            width: calc(100% - 16px); /* Adjust the width and margin as needed */
-            padding: 8px;
-            box-sizing: border-box;
-            margin-bottom: 16px;
-        }
-    </style>
-
-    <!-- CSS to create tree display sourced from https://codepen.io/ross-angus/pen/jwxMjL-->
+    
+    <!-- CSS to create tree display sourced from https://codepen.io/ross-angus/pen/jwxMjL and altered to accomodate current web page-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='treestyles.css') }}">
 </head>
 
+<style>
+    nav a{
+            margin: 0 15px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+    header {
+            width: 100%;
+            background-color: #f1f1f1;
+            text-align: center;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+</style>
+
 <body>
+
+    <header>
+        <nav>
+            <a href="/greet">Home</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
     
 
     <!-- CSS applied to generated Multi-Tree passed from 'EmployeeTree' function-->
     <div>
-        
 
         <ul class="tree">
             <!-- autoescape renders the 'htmlcontent' variable as actual html code and not just a string variable -->

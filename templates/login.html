@@ -4,7 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
-    <style>
+    
+      <style>
+        
+        nav a{
+            margin: 0 15px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        header {
+            width: 100%;
+            background-color: #f1f1f1;
+            text-align: center;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
         body {
             display: flex;
             flex-direction: column;
@@ -46,8 +67,16 @@
             margin-bottom: 10px;
         }
     </style>
+    
 </head>
 <body>
+    <header>
+        <nav>
+            
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
 
     <form action="/login" method="post">
         <h2>Login</h2>
@@ -65,9 +94,7 @@
         <button type="submit">Login</button><br>
     </form>
 
-    <a href="/signup">
-        <button>Sign Up</button>
-    </a>
+    
 
 </body>
 </html>
