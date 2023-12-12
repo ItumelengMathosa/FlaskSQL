@@ -49,6 +49,47 @@ print(GenerateEmployeeNumber(1000))
 
 
 
+def DeleteEmployeeFromDataBase1(employeeNumber):
+    Doc_to_del = None
+    Docs_to_update = []
+    Employees = []
+    employeeID = None
+    managerID = None
+
+    data_ref = db.collection("Employees").stream()
+    
+    #Make docs from database to dictionary
+    for doc in data_ref:
+        Employees.append(doc.to_dict())
+
+    
+
+    for emp in Employees:
+        if emp['EmployeeNumber'] == employeeNumber:
+            Doc_to_del = emp['EmployeeNumber']
+            employeeID = emp['ID']
+            managerID = emp['ManagerID']
+
+    for emp in Employees:
+        if emp['ManagerID'] == employeeID:
+            #Appends Docs_to_update with every employee number of the employees whose ManagerID's matches the ID of the
+            #employee is getting deleted
+            Docs_to_update.append(emp['EmployeeNumber'])
+
+
+    for EmployeeNumber in Docs_to_update:
+        doc_ref = db.collection("Employees").document(str(EmployeeNumber))
+        #Updates the current 'EmployeeNumber''s ManagerID to the managerID of the employee that gettin deleted
+        doc_ref.update({"ManagerID": managerID})
+    
+    db.collection("Employees").document(str(Doc_to_del)).delete()
+
+
+
+#Populate()
+
+
+
 
 
 

@@ -233,15 +233,17 @@
                 <button type="submit">Edit</button>
             </form>
 
-            <form id="DeleteEmployeeForm">
+            <form id="DeleteEmployeeForm" action="/DeleteEmployee" method="post">
                 <h2>Delete Employee</h2>
 
                 <label for="deletionNodeIDInput">Employee ID:</label>
                 <input type="text" id="deletionNodeIDInput" name="deletionNodeIDInput" placeholder="Selected Node" required readonly>
                 
-                <label for="deletionNodeNameInput">Employee ID:</label>
+                <label for="deletionNodeNameInput">Employee Name:</label>
                 <input type="text" id="deletionNodeNameInput" name="deletionNodeNameInput" placeholder="Selected Node" required readonly>
 
+                <label for="deletionNodeEmployeeNumberInput">Employee Number:</label>
+                <input type="text" id="deletionNodeEmployeeNumberInput" name="deletionNodeEmployeeNumberInput" placeholder="Selected Node" required readonly>
                 <button type="submit">Delete</button>
             </form>
             
@@ -257,6 +259,7 @@
 
             document.getElementById('deletionNodeIDInput').value = nodeID;
             document.getElementById('deletionNodeNameInput').value = nodeName;
+            document.getElementById('deletionNodeEmployeeNumberInput').value = employeeNumber;
 
             
             //Sets the addNodeManagerID in 'Add Employee' form's value equal to the node that was clicked

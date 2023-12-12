@@ -169,9 +169,13 @@ def EditEmployee():
 
 @app.route('/DeleteEmployee', methods=['POST','GET'])
 def DeleteEmployee():
-    #node = EmployeeNode(id,name,birthdate,employeeNumber,salary,role,parentid)
-    #DeleteEmployeeFromDataBase(node)
-    return redirect('EmployeeTree.html')
+    if request.method == 'POST':
+
+        empID = request.form.get('deletionNodeIDInput')
+        name = request.form.get('deletionNodeNameInput')
+        employeeNumber = request.form.get('deletionNodeEmployeeNumberInput')
+        DeleteEmployeeFromDataBase(str(employeeNumber))
+        return redirect('EmployeeTree')
 
 @app.route('/EmployeeTable')
 def EmployeeTable():
