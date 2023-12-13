@@ -184,7 +184,7 @@ def greet():
 
 
     email = session["name"]
-    
+
     #Generate a gravatar url
     gravatar_url = generate_gravatar_url(email)
     return render_template('greet.html', name=session["name"], gravatar_url=gravatar_url)
@@ -195,4 +195,4 @@ def greet():
 
 #Main method
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0",port=5000, debug=True)
