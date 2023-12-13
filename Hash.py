@@ -2,6 +2,17 @@ import hashlib
 
 from InitializeFirestore import *
 
+def generate_gravatar_url(email, size=200, default_image=None):
+    # Calculate the MD5 hash of the email
+    md5_hash = hashlib.md5(email.lower().encode('utf-8')).hexdigest()
+
+    # Build the Gravatar URL
+    gravatar_url = f"https://www.gravatar.com/avatar/{md5_hash}?s={size}"
+    if default_image:
+        gravatar_url += f"&d={default_image}"
+
+    return gravatar_url
+
 #Get all documents from Users collection
 user_ref = db.collection("users").stream()
 
@@ -19,6 +30,7 @@ def Hash(value):
     hashedvalue = hasher.hexdigest()
 
     return hashedvalue
+
 
 def ValidateUser(username, password, users=USERS):
     

@@ -175,7 +175,19 @@ def greet():
     cont = CheckSession()
     if cont == False:
         return redirect('/login')
-    return render_template('greet.html', name=session["name"])
+    #---------------------------#
+
+    #Check if email was entered
+    if request.method == 'POST':
+        email = request.form.get('email')
+    #---------------------------#
+
+
+    email = session["name"]
+    
+    #Generate a gravatar url
+    gravatar_url = generate_gravatar_url(email)
+    return render_template('greet.html', name=session["name"], gravatar_url=gravatar_url)
 
 
 #-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
