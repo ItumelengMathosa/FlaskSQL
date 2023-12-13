@@ -4,7 +4,7 @@ from firebase_admin import credentials
 
 
 # Use a service account.
-cred = credentials.Certificate('FireStorePrivateKey\epiuse-bd49f-firebase-adminsdk-7fa1l-03f35a3df4.json')
+cred = credentials.Certificate('FireStorePrivateKey\epiuse-bd49f-437001091f8b.json')
 
 app = firebase_admin.initialize_app(cred)
 
