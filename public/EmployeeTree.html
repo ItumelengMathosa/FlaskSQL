@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tree Structure</title>
+    
+    <!-- CSS to create tree display sourced from https://codepen.io/ross-angus/pen/jwxMjL and altered to accomodate current web page-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='treestyles.css') }}">
+</head>
+
+<style>
+    nav a{
+            margin: 0 15px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+    header {
+            width: 100%;
+            background-color: #f1f1f1;
+            text-align: center;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+</style>
+
+<body>
+
+    <header>
+        <nav>
+            <a href="/greet">Home</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
+    
+
+    <!-- CSS applied to generated Multi-Tree passed from 'EmployeeTree' function-->
+    <div>
+
+        <ul class="tree">
+            <!-- autoescape renders the 'htmlcontent' variable as actual html code and not just a string variable -->
+            {% autoescape off%}
+            {{htmlcontent}}
+            {% endautoescape %}
+        </ul>
+
+        <!-- Form for adding a new Employee -->
+
+        <div class="form-container">
+
+            <form id="AddEmployeeForm" action="/AddNewEmployee" method="post">
+                <h2>Add New Employee</h2>
+                
+    
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+    
+                <label for="birthDate">Birth Date:</label>
+                <input type="date" id="birthDate" name="birthDate" required>
+    
+                <label for="addNodeManagerId">Manager ID:</label>
+                <input type="text" id="addNodeManagerId" name="addNodeManagerId" placeholder="Click on node to assign manager" required readonly>
+    
+                <label for="role">Role:</label>
+                <input type="text" id="role" name="role" required>
+    
+                <label for="salary">Salary:</label>
+                <input type="number" id="salary" name="salary" required>
+    
+                <button type="submit">Add New Employee</button>
+            </form>
+
+            <form id="EditEmployeeForm" action="/EditEmployee" method="post">
+
+                <h2>Edit Employee</h2>
+
+                <label for="editNodeIDInput">Employee ID:</label>
+                <input type="text" id="editNodeIDInput" name="editNodeIDInput" placeholder="Selected ID" required readonly>
+    
+                <label for="editNodeNameInput">Name:</label>
+                <input type="text" id="editNodeNameInput" name="editNodeNameInput" required>
+    
+                <label for="editNodeBirthDateInput">Birth Date:</label>
+                <input type="date" id="editNodeBirthDateInput" name="editNodeBirthDateInput" required>
+    
+                <label for="editNodeManagerIdInput">New Manager ID:</label>
+                <select id="editNodeManagerIdInput" name="editNodeManagerIdInput" aria-placeholder="Select '0' for no manager" required>
+                    <!-- Options will be dynamically generated here -->
+                </select>
+    
+                <label for="editNodeEmployeeNumberInput">Employee Number:</label>
+                <input type="text" id="editNodeEmployeeNumberInput" name="editNodeEmployeeNumberInput" readonly required>
+    
+                <label for="editNodeRoleInput">Role:</label>
+                <input type="text" id="editNodeRoleInput" name="editNodeRoleInput" required>
+    
+                <label for="editNodeSalaryInput">Salary:</label>
+                <input type="number" id="editNodeSalaryInput" name="editNodeSalaryInput" required>
+    
+                <button type="submit">Edit</button>
+            </form>
+
+            <form id="DeleteEmployeeForm" action="/DeleteEmployee" method="post">
+                <h2>Delete Employee</h2>
+
+                <label for="deletionNodeIDInput">Employee ID:</label>
+                <input type="text" id="deletionNodeIDInput" name="deletionNodeIDInput" placeholder="Selected Node" required readonly>
+                
+                <label for="deletionNodeNameInput">Employee Name:</label>
+                <input type="text" id="deletionNodeNameInput" name="deletionNodeNameInput" placeholder="Selected Node" required readonly>
+
+                <label for="deletionNodeEmployeeNumberInput">Employee Number:</label>
+                <input type="text" id="deletionNodeEmployeeNumberInput" name="deletionNodeEmployeeNumberInput" placeholder="Selected Node" required readonly>
+                <button type="submit">Delete</button>
+            </form>
+            
+        </div>
+        
+    </div>
+
+    <script>
+        //handleNodeClick is called in 'EmployeeTree.py' in the generate_tree_html() function. 
+        //Every node or 'li' has HandleNodeClick inside of their html element tag
+        function HandleNodeClick(nodeName, nodeID, managerId, birthDate, employeeNumber, salary, role) {
+            // Update the input element with the clicked node's information
+
+            document.getElementById('deletionNodeIDInput').value = nodeID;
+            document.getElementById('deletionNodeNameInput').value = nodeName;
+            document.getElementById('deletionNodeEmployeeNumberInput').value = employeeNumber;
+
+            
+            //Sets the addNodeManagerID in 'Add Employee' form's value equal to the node that was clicked
+            document.getElementById('addNodeManagerId').value = nodeID;
+
+            //Sets all inputs in 'Edit Employee' form equal to all values of node that was clicked
+
+            document.getElementById('editNodeIDInput').value = nodeID;
+            document.getElementById('editNodeNameInput').value = nodeName;
+            document.getElementById('editNodeBirthDateInput').value = birthDate;
+
+            //document.getElementById('editNodeManagerIdInput').value = managerId;
+            document.getElementById('editNodeEmployeeNumberInput').value = employeeNumber;
+            document.getElementById('editNodeRoleInput').value = role;
+            document.getElementById('editNodeSalaryInput').value = salary;
+        }
+
+        function populateDropdown() {
+            var dropdown = document.getElementById('editNodeManagerIdInput');
+            var nodeNames = [];
+
+            // Iterate through all <li> elements on the page
+            var listItems = document.querySelectorAll('li');
+            listItems.forEach(function (li) {
+                var nodeName = li.getAttribute('id'); // Get the 'id' attribute of the <li>
+                if (nodeName) {
+                    nodeNames.push(nodeName);
+                }
+            });
+
+            // Clear existing options
+            dropdown.innerHTML = '';
+
+            // Add a default empty option
+            var defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.text = 'Select new Manager ID (Select "0" for no manager)';
+            dropdown.appendChild(defaultOption);
+
+            // Add options for each node name
+            for (var i = 0; i < nodeNames.length; i++) {
+                var option = document.createElement('option');
+                option.value = nodeNames[i];
+                option.text = nodeNames[i].toString();
+                dropdown.appendChild(option);
+            }
+        }
+
+    // Call the function to populate the dropdown
+    populateDropdown();
+    </script>
+
+</body>
+
+</html>

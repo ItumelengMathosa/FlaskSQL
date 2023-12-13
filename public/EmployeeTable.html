@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Searchable HTML Table</title>
+    
+    <style>
+        nav a{
+            margin: 0 15px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        header {
+            width: 100%;
+            background-color: #f1f1f1;
+            text-align: center;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        table {
+            font-family: Arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+    </style>
+    
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="/greet">Home</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
+
+    <h2>Employee Table</h2>
+
+    <input type="text" id="searchInput" placeholder="Search for data..." oninput="filterTable()">
+
+    <table id="myTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Employee Number</th>
+                <th>Manager's ID</th>
+                <th>Salary</th>
+                <th>Birth Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for employee in tabledata %}
+                <tr>
+                    <td>{{ employee["ID"] }}</td>
+                    <td>{{ employee["Name"] }}</td>
+                    <td>{{ employee["Role"] }}</td>
+                    <td>{{ employee["EmployeeNumber"] }}</td>
+                    <td>{{ employee["ManagerID"] }}</td>
+                    <td>{{ employee["Salary"] }}</td>
+                    <td>{{ employee["BirthDate"] }}</td>
+                </tr>
+                <!-- Add more rows as needed -->
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        function filterTable() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 0; i < tr.length; i++) {
+                // Skip the filtering for the first row (table headers)
+                if (i === 0) {
+                    continue;
+                }
+
+                var matchFound = false;
+                td = tr[i].getElementsByTagName("td");
+
+                for (var j = 0; j < td.length; j++) {
+                    txtValue = td[j].textContent || td[j].innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        matchFound = true;
+                        break;
+                    }
+                }
+
+                if (matchFound) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
