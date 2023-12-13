@@ -25,18 +25,31 @@
             left: 0;
             z-index: 1000;
         }
+
+        section {
+            margin: 2em;
+            padding: 2em;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
     </style>
 <body>
     <header>
         <nav>
             <a href="EmployeeTree">Employee Tree</a>
             <a href="/EmployeeTable">Employee Table</a>
+            <a href="/logout">Log out</a>
         </nav>
     </header><br><br>
 
     <div>
         <h1>User Profile</h1>
-        <img src="{{ gravatar_url }}" alt="Gravatar">
+        <section>
+            <h2>Thank you for visiting.</h2>
+            
+        </section>
+        
         <p>Signed In as {{ name }}</p>
 
         <a href="/logout">Log out</a>
